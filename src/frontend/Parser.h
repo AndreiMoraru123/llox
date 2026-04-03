@@ -61,7 +61,7 @@ namespace lox {
             std::optional<VarExprPtr> superclass;
             if (match(LESS)) {
                 consume(IDENTIFIER, "Expect superclass name.");
-                superclass = std::make_unique<VarExpr>(previous());
+                superclass = make_expr_ptr(std::make_unique<VarExpr>(previous()));
             }
 
             consume(LEFT_BRACE, "Expect '{' before class body.");
@@ -78,7 +78,7 @@ namespace lox {
 
         VarStmtPtr varDeclaration() {
             const Token name = consume(IDENTIFIER, "Expect variable name.");
-            Expr initializer = match(EQUAL) ? expression() : std::make_unique<LiteralExpr>(nullptr);
+            Expr initializer = match(EQUAL) ? expression() : make_expr_ptr(std::make_unique<LiteralExpr>(nullptr));
             consume(SEMICOLON, "Expect ';' after variable declaration.");
             return std::make_shared<VarStmt>(name, std::move(initializer));
         }
@@ -137,7 +137,7 @@ namespace lox {
             }
 
             if (!condition.has_value()) {
-                condition = std::make_unique<LiteralExpr>(true);
+                condition = make_expr_ptr(std::make_unique<LiteralExpr>(true));
             }
 
             body = std::make_shared<WhileStmt>(std::move(condition.value()), std::move(body));
@@ -237,7 +237,7 @@ namespace lox {
 
             while (match(types)) {
                 auto token = previous();
-                expr = std::make_unique<BinaryExpr>(std::move(expr), token, static_cast<BinaryOp>(token.getType()), std::invoke(f, this));
+                expr = make_expr_ptr(std::make_unique<BinaryExpr>(std::move(expr), token, static_cast<BinaryOp>(token.getType()), std::invoke(f, this)));
             }
 
             return expr;
@@ -256,11 +256,11 @@ namespace lox {
 
                 if (std::holds_alternative<VarExprPtr>(expr)) {
                     const auto name = std::get<VarExprPtr>(expr)->name;
-                    return std::make_unique<AssignExpr>(name, std::move(value));
+                    return make_expr_ptr(std::make_unique<AssignExpr>(name, std::move(value)));
                 }
                 if (std::holds_alternative<GetExprPtr>(expr)) {
                     const auto &getExpr = std::get<GetExprPtr>(expr);
-                    return std::make_unique<SetExpr>(std::move(getExpr->object), getExpr->name, std::move(value));
+                    return make_expr_ptr(std::make_unique<SetExpr>(std::move(getExpr->object), getExpr->name, std::move(value)));
                 }
 
                 lox::error(equals, "Invalid assignment target.");
@@ -274,7 +274,7 @@ namespace lox {
 
             while (match(OR)) {
                 auto right = and_();
-                expr = std::make_unique<LogicalExpr>(std::move(expr), LogicalOp::OR, std::move(right));
+                expr = make_expr_ptr(std::make_unique<LogicalExpr>(std::move(expr), LogicalOp::OR, std::move(right)));
             }
 
             return expr;
@@ -285,7 +285,7 @@ namespace lox {
 
             while (match(AND)) {
                 auto right = equality();
-                expr = std::make_unique<LogicalExpr>(std::move(expr), LogicalOp::AND, std::move(right));
+                expr = make_expr_ptr(std::make_unique<LogicalExpr>(std::move(expr), LogicalOp::AND, std::move(right)));
             }
 
             return expr;

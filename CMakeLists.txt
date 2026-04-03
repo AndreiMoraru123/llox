@@ -2,9 +2,8 @@ cmake_minimum_required(VERSION 3.26)
 project(cpplox)
 
 set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_COMPILER "g++-13")
 
-find_package(LLVM 19 REQUIRED CONFIG)
+find_package(LLVM 22.1 REQUIRED CONFIG)
 
 message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
 message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")

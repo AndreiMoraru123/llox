@@ -55,18 +55,23 @@ namespace lox {
     struct VarExpr;
     struct AssignExpr;
 
-    using BinaryExprPtr = std::unique_ptr<BinaryExpr>;
-    using CallExprPtr = std::unique_ptr<CallExpr>;
-    using GetExprPtr = std::unique_ptr<GetExpr>;
-    using SetExprPtr = std::unique_ptr<SetExpr>;
-    using ThisExprPtr = std::unique_ptr<ThisExpr>;
-    using SuperExprPtr = std::unique_ptr<SuperExpr>;
-    using GroupingExprPtr = std::unique_ptr<GroupingExpr>;
-    using LiteralExprPtr = std::unique_ptr<LiteralExpr>;
-    using LogicalExprPtr = std::unique_ptr<LogicalExpr>;
-    using UnaryExprPtr = std::unique_ptr<UnaryExpr>;
-    using VarExprPtr = std::unique_ptr<VarExpr>;
-    using AssignExprPtr = std::unique_ptr<AssignExpr>;
+    template<typename T>
+    std::shared_ptr<T> make_expr_ptr(std::unique_ptr<T>&& ptr) {
+        return std::shared_ptr<T>(std::move(ptr));
+    }
+
+    using BinaryExprPtr = std::shared_ptr<BinaryExpr>;
+    using CallExprPtr = std::shared_ptr<CallExpr>;
+    using GetExprPtr = std::shared_ptr<GetExpr>;
+    using SetExprPtr = std::shared_ptr<SetExpr>;
+    using ThisExprPtr = std::shared_ptr<ThisExpr>;
+    using SuperExprPtr = std::shared_ptr<SuperExpr>;
+    using GroupingExprPtr = std::shared_ptr<GroupingExpr>;
+    using LiteralExprPtr = std::shared_ptr<LiteralExpr>;
+    using LogicalExprPtr = std::shared_ptr<LogicalExpr>;
+    using UnaryExprPtr = std::shared_ptr<UnaryExpr>;
+    using VarExprPtr = std::shared_ptr<VarExpr>;
+    using AssignExprPtr = std::shared_ptr<AssignExpr>;
 
     using Expr = std::variant<
         BinaryExprPtr,
@@ -268,4 +273,4 @@ namespace lox {
 
 }// namespace lox
 
-#endif//LOX_LLVM_AST_H
+#endif//shared_ptr

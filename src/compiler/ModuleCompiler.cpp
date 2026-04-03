@@ -190,9 +190,9 @@ namespace lox {
         const auto *const Features = "";
 
         const TargetOptions opt;
-        auto *const TheTargetMachine = Target->createTargetMachine(TargetTriple, CPU, Features, opt, Reloc::PIC_);
+        auto *const TheTargetMachine = Target->createTargetMachine(llvm::Triple(TargetTriple), CPU, Features, opt, Reloc::PIC_);
 
-        M.setTargetTriple(TargetTriple);
+        M.setTargetTriple(llvm::Triple(TargetTriple));
         M.setDataLayout(TheTargetMachine->createDataLayout());
 
         this->TheTargetMachine = TheTargetMachine;

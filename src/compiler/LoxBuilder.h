@@ -134,7 +134,7 @@ namespace lox {
             // Fill in the single overloaded type: memory object type.
             Type *ObjectPtr[1] = {Ptr->getType()};
             Module *M = BB->getParent()->getParent();
-            llvm::Function *TheFn = Intrinsic::getDeclaration(M, Intrinsic::invariant_end, ObjectPtr);
+            llvm::Function *TheFn = Intrinsic::getOrInsertDeclaration(M, Intrinsic::invariant_end, ObjectPtr);
             return CreateCall(TheFn, Ops);
         }
     };
