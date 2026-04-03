@@ -3,7 +3,7 @@ project(cpplox)
 
 set(CMAKE_CXX_STANDARD 23)
 
-find_package(LLVM 22.1 REQUIRED CONFIG)
+find_package(LLVM REQUIRED CONFIG)
 
 message(STATUS "Found LLVM ${LLVM_PACKAGE_VERSION}")
 message(STATUS "Using LLVMConfig.cmake in: ${LLVM_DIR}")
@@ -74,17 +74,19 @@ target_compile_options(cpplox PRIVATE
 #        -std=c++20 -stdlib=libc++
 )
 
-llvm_map_components_to_libnames(llvm_libs
-        ${LLVM_TARGETS_TO_BUILD}
-        orcjit
-        support
-        core
-        irreader
-        codegen
-        mc
-        mcparser
-        option)
-target_link_libraries(cpplox ${llvm_libs})
+# llvm_map_components_to_libnames(llvm_libs
+#         ${LLVM_TARGETS_TO_BUILD}
+#         orcjit
+#         support
+#         core
+#         irreader
+#         codegen
+#         mc
+#         mcparser
+#         option)
+# target_link_libraries(cpplox ${llvm_libs})
+target_link_libraries(cpplox LLVM)
+
 
 #set(DART_PATH "/opt/dart-sdk-v2/bin/dart")
 #set(CRAFTING_INTERPRETERS_PATH "~/Projects/craftinginterpreters")
